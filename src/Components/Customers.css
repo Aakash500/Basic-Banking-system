@@ -9,6 +9,7 @@
 .customer{
     display: flex;
 }
+
 .accountIcon{
     background-image: url(../../public/img/account.png);
     width:4rem;
@@ -16,4 +17,25 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    position: relative;
+    left:50%;
+    transform: translateX(-50%);
+}
+.userDetail{
+    width: 100%;
+}
+
+.details{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+     
+}
+.field{
+    display: flex;
+    flex-direction: column;
+}
+.value{
+    display: flex;
+    flex-direction: column;
 }

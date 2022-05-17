@@ -8,14 +8,36 @@ function Customers() {
   const [show, setShow] = useState(false);
   const [fromname, setFrom] = useState("");
   const [toname, setTo] = useState("");
+  const [curruser, setCurruser] = useState({});
+  const [amount, setAmount] =  useState(0);
+
+  const possibleTransfer = () =>{
+    if(amount>curruser.balance) return true;
+    return false;
+  }
+
+  const handleSend = () =>{
+    let res = window.confirm("Money sent");
+    if(res){
+      setShow(false);
+    }
+  }
+
+  const handleAmount = (e) =>{
+    setAmount(e.target.value)
+  }
 
   const handleClose = () => {
     setShow(false);
     setTo("")
+    setAmount("");
   }
-  const handleShow = (e) => {
+
+
+  const handleShow = (user) => {
     setShow(true);  
-    setFrom(e.target.innerHTML);
+    setFrom(user.name)
+    setCurruser(user)
   }
   const handleToName = (e) =>{
     setTo(e.target.value)
@@ -48,7 +70,7 @@ function Customers() {
             return (
               <tr key={item._id}>
                 <td>{item._id}</td>
-                <td className="name" onClick={handleShow}>
+                <td className="name" onClick={()=>handleShow(item)}>
                   {item.name}
                 </td>
                 <td>{item.email}</td>
@@ -62,7 +84,7 @@ function Customers() {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Transfer Money</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -80,19 +102,31 @@ function Customers() {
                 </div>
                 <div>
                   <label htmlFor="amount">Amount</label>
-                  <input type="number" name="amount" id="amount" step={100} />
+                  <input type="number" name="amount" id="amount" step={100} onChange={handleAmount} value={amount}/>
                 </div>
               </form>
             </div>
 
             <div className="userDetail">
               <div className="accountIcon"></div>
+              <div className="details">
+                <div className="field">
+                  <span>Name</span>
+                  <span>Balance</span>
+                  <span>Phone no.</span>
+                </div>
+                <div className="value">
+                  <span>{fromname}</span>
+                  <span>Rs.{curruser.balance}</span>
+                  <span>{curruser.phoneno}</span>
+                </div>
+              </div>
             </div>
           </div>
         </Modal.Body>
 
         <Modal.Footer className="footer">
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleSend} >
           send money
           </Button>
           <Button variant="secondary" onClick={handleClose}>
