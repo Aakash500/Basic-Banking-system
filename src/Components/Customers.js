@@ -22,12 +22,12 @@ function Customers() {
     let res = window.confirm("Money sent");
     if(res){
       setShow(false);
-      axios.patch("http://localhost:5500/",{
-        toamount:Number(amount),
-        fromamount:Number(curruser.balance-amount),
-        from: fromname,
-        to:toname
-      }).then((res)=>{
+      axios.patch("http://localhost:5500/",[
+        Number(amount),
+        Number(curruser.balance-amount),
+        fromname,
+        toname
+    ]).then((res)=>{
         if(res.data.length === 0){
           alert("Name not found try again with correct details")
         }else{
@@ -68,7 +68,8 @@ function Customers() {
   }, []);
   return (
     <div className="container">
-      <Link to="/">Back</Link>
+      <Link to="/">Back</Link><br />
+      <Link to="/history">Transfer History</Link>
       <table className="table table-dark table-striped">
         <thead>
           <tr>

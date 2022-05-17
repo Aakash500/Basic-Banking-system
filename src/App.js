@@ -1,7 +1,11 @@
 import React from 'react'
-import Home from './Components/Home'
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
+
+import Home from './Components/Home'
 import Customers from './Components/Customers'
+import Transferhistory from './Components/Transferhistory'
+
+
 
 function App() {
   return (
@@ -10,11 +14,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/customers" element={<Customers/>}/>
+        <Route path="/history" element={<Transferhistory/>}/>
       </Routes>
    </Router>
-
    </>
-
   )
 }
 

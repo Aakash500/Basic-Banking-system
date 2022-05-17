@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const connect = require("../database/store")
+const history = require("../database/History")
+
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -18,18 +20,15 @@ app.get("/", async(req, res) => {
 
 app.patch("/", async(req, res)=>{
    const data = await connect();
-   const toName = req.body.to;
-   const fromName = req.body.from;
-    const toamount = req.body.toamount;
-    const fromamount = req.body.fromamount;
+   const transferData = await history();
+   const [toamount, fromamount, fromName, toName] = req.body;
    const result = await data.find({name:toName}).toArray();
    if(result.length === 0){
      res.send([])
    }else{
-     const update1 = await data.updateOne({name:toName},{$inc:{balance:toamount}})
-     const update2 = await data.updateOne({name:fromName},{$set:{balance:fromamount}});
-     console.log(update1)
-     console.log(update2)
+     await data.updateOne({name:toName},{$inc:{balance:toamount}})
+     await data.updateOne({name:fromName},{$set:{balance:fromamount}});
+     await transferData.insertOne({From:fromName, To:toName, Amount:toamount});
      const d = await data.find().toArray();
      res.send(d);
    }
