@@ -12,7 +12,7 @@ function Customers() {
   const [amount, setAmount] =  useState(0);
 
   const possibleTransfer = () =>{
-    if(amount>curruser.balance) return true;
+    if(amount>curruser.balance || amount<=0) return true;
     return false;
   }
 
@@ -53,7 +53,7 @@ function Customers() {
     getData();
   }, []);
   return (
-    <div>
+    <div className="container">
       <Link to="/">Back</Link>
       <table className="table table-dark table-striped">
         <thead>
@@ -98,11 +98,11 @@ function Customers() {
                 </div>
                 <div>
                   <label htmlFor="To">To:</label>
-                  <input type="text" name="To" id="To" onChange={handleToName} value={toname}/>
+                  <input type="text" autoComplete="off" name="To" id="To" onChange={handleToName} value={toname}/>
                 </div>
                 <div>
                   <label htmlFor="amount">Amount</label>
-                  <input type="number" name="amount" id="amount" step={100} onChange={handleAmount} value={amount}/>
+                  <input type="number" autoComplete="off" name="amount" id="amount" step={100} onChange={handleAmount} value={amount}/>
                 </div>
               </form>
             </div>
@@ -126,7 +126,7 @@ function Customers() {
         </Modal.Body>
 
         <Modal.Footer className="footer">
-          <Button variant="primary" onClick={handleSend} >
+          <Button variant="primary" onClick={handleSend} disabled={possibleTransfer()} >
           send money
           </Button>
           <Button variant="secondary" onClick={handleClose}>
