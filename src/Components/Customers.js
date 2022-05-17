@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
+import axios from "axios"
 import "./Customers.css";
+
 
 function Customers() {
   const [d, setd] = useState([]);
@@ -20,6 +22,18 @@ function Customers() {
     let res = window.confirm("Money sent");
     if(res){
       setShow(false);
+      axios.patch("http://localhost:5500/",{
+        toamount:Number(amount),
+        fromamount:Number(curruser.balance-amount),
+        from: fromname,
+        to:toname
+      }).then((res)=>{
+        if(res.data.length === 0){
+          alert("Name not found try again with correct details")
+        }else{
+          setd(res.data)
+        }
+      })
     }
   }
 
