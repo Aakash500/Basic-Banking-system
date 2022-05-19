@@ -10,6 +10,10 @@
     display: flex;
 }
 
+.to_message, .amount_message{
+    color: rgb(205, 13, 13);
+}
+
 .accountIcon{
     background-image: url(../../public/img/account.png);
     width:4rem;

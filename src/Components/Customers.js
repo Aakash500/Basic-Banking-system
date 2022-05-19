@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import axios from "axios"
 import "./Customers.css";
@@ -13,13 +12,32 @@ function Customers() {
   const [curruser, setCurruser] = useState({});
   const [amount, setAmount] =  useState(0);
 
+  const getRef = (message) => document.getElementsByClassName(message)[0]
+
   const possibleTransfer = () =>{
-    if(amount>curruser.balance || amount<=0) return true;
-    return false;
+    if(amount>curruser.balance || amount<=0) {
+      // getRef("amount_message").innerHTML = "Amount must not be more than balance"
+      return true;
+    }
+    else{
+      // getRef("amount_message").innerHTML = ""
+      return false;
+    }
+  }
+
+  const possibleName = () =>{
+    if(fromname.toLowerCase() === toname.toLowerCase()){
+      // getRef("to_message").innerHTML = "names cannot be same"
+      return true;
+    }
+    else {
+      // getRef("to_message").innerHTML = ""
+      return false;
+    }
   }
 
   const handleSend = () =>{
-    let res = window.confirm("Money sent");
+    let res = window.confirm(`Are you sure to transfer ${amount}Rs to ${toname}`);
     if(res){
       setShow(false);
       axios.patch("http://localhost:5500/",[
@@ -67,9 +85,7 @@ function Customers() {
     getData();
   }, []);
   return (
-    <div className="container">
-      <Link to="/">Back</Link><br />
-      <Link to="/history">Transfer History</Link>
+    <div className="container mt-5">
       <table className="table table-dark table-striped">
         <thead>
           <tr>
@@ -114,10 +130,12 @@ function Customers() {
                 <div>
                   <label htmlFor="To">To:</label>
                   <input type="text" autoComplete="off" name="To" id="To" onChange={handleToName} value={toname}/>
+                  <p className="to_message"></p>
                 </div>
                 <div>
                   <label htmlFor="amount">Amount</label>
-                  <input type="number" autoComplete="off" name="amount" id="amount" step={100} onChange={handleAmount} value={amount}/>
+                  <input type="number" autoComplete="off" name="amount" id="amount" step={100} s onChange={handleAmount} value={amount}/>
+                  <p className="amount_message"></p>
                 </div>
               </form>
             </div>
@@ -141,7 +159,7 @@ function Customers() {
         </Modal.Body>
 
         <Modal.Footer className="footer">
-          <Button variant="primary" onClick={handleSend} disabled={possibleTransfer()} >
+          <Button variant="primary" onClick={handleSend} disabled={possibleTransfer() || possibleName()} >
           send money
           </Button>
           <Button variant="secondary" onClick={handleClose}>

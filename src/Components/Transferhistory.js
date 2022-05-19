@@ -1,6 +1,5 @@
 import React from 'react'
 import axios from "axios"
-import {Link} from "react-router-dom"
 
 function Transferhistory() {
     const [history, setHistory] = React.useState([])
@@ -14,9 +13,7 @@ function Transferhistory() {
         return <span>Loading.....</span>
     }
   return (
-    <div className="container">
-        <Link to="/">Main page</Link><br />
-        <Link to="/customers">Go Back</Link>
+    <div className="container mt-5">
         <table className="table table-dark table-striped">
         <thead>
           <tr>
